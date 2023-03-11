@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: "Athentication Application for Job Api"
+Globals:
+  Function:
+    Timeout: 600
+
+Resources:
+  AuthApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: dev
+      BinaryMediaTypes: ["*/*"]
+  AuthFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      ImageUri: 728330430041.dkr.ecr.us-east-1.amazonaws.com/jobs-auth-img:0.0.1
+      Architectures:
+        - x86_64
+      Events:
+        AuthFunctionProxy:
+          Type: Api
+          Properties:
+            RestApiId: !Ref AuthApi
+            Path: "/{proxy+}"
+            Method: ANY
+        AuthFunctionRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref AuthApi
+            Path: "/"
+            Method: ANY
+    Metadata:
+      DockerTag: nodejs18.x-v1
+      DockerContext: ./authApi
+      Dockerfile: Dockerfile
+
+Outputs:
+  AuthFunctiondApi:
+    Description: "API Gateway endpoint URL for dev stage for Auth function"
+    Value: !Sub "https://${AuthApi}.execute-api.${AWS::Region}.amazonaws.com/dev/api"
+  AuthFunction:
+    Description: "Auth Lambda Function ARN"
+    Value: !GetAtt AuthFunction.Arn
+  AuthFunctionIamRole:
+    Description: "Implicit IAM Role created for Auth function"
+    Value: !GetAtt AuthFunctionRole.Arn
