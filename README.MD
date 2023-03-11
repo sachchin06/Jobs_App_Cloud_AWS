@@ -1,6 +1,6 @@
-docker tag 165b3a229578 728330430041.dkr.ecr.us-east-1.amazonaws.com/jobs-auth-img:0.0.1
+auth api image : docker tag 165b3a229578 728330430041.dkr.ecr.us-east-1.amazonaws.com/jobs-auth-img:0.0.1
 
-728330430041.dkr.ecr.us-east-1.amazonaws.com/jobs-api-img
+jobs api image : docker tag 1d923637eb71 728330430041.dkr.ecr.us-east-1.amazonaws.com/jobs-app-img:0.0.1
 
 aws ecr create-repository --repository-name jobs-api-img --image-tag-mutability IMMUTABLE --image-scanning-configuration scanOnPush=true
 
@@ -10,3 +10,10 @@ steps
 docker build -t job-app-img:1.0.0 .
 
 #create aws docker registry
+
+#create docker image with aws registry
+
+#sam build
+
+sam build
+sam deploy --guided

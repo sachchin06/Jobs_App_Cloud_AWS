@@ -7,7 +7,6 @@ const {
 } = require("../errors");
 
 const getAllJobs = async (req, res) => {
-  req.user.email = "sachchin06@gmail.com";
   const jobs = await Job.find({ createdBy: req.user.email }).sort("createdAt");
   res.status(StatusCodes.OK).json({ jobs, count: jobs.length });
 };

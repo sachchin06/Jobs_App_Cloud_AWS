@@ -15,7 +15,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       PackageType: Image
-      ImageUri: 728330430041.dkr.ecr.us-east-1.amazonaws.com/jobs-Job-img:0.0.1
+      ImageUri: 728330430041.dkr.ecr.us-east-1.amazonaws.com/jobs-app-img:0.0.1
       Architectures:
         - x86_64
       Events:
@@ -33,7 +33,7 @@ Resources:
             Method: ANY
     Metadata:
       DockerTag: nodejs18.x-v1
-      DockerContext: ./jobApi
+      DockerContext: ./jobsApi
       Dockerfile: Dockerfile
 
 Outputs:
