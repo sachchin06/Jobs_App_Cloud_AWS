@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: "Jobs Crud Application"
+Globals:
+  Function:
+    Timeout: 600
+
+Resources:
+  JobApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: dev
+      BinaryMediaTypes: ["*/*"]
+  JobFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      ImageUri: 728330430041.dkr.ecr.us-east-1.amazonaws.com/jobs-Job-img:0.0.1
+      Architectures:
+        - x86_64
+      Events:
+        JobFunctionProxy:
+          Type: Api
+          Properties:
+            RestApiId: !Ref JobApi
+            Path: "/{proxy+}"
+            Method: ANY
+        JobFunctionRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref JobApi
+            Path: "/"
+            Method: ANY
+    Metadata:
+      DockerTag: nodejs18.x-v1
+      DockerContext: ./jobApi
+      Dockerfile: Dockerfile
+
+Outputs:
+  JobFunctiondApi:
+    Description: "API Gateway endpoint URL for dev stage for Job function"
+    Value: !Sub "https://${JobApi}.execute-api.${AWS::Region}.amazonaws.com/dev/api"
+  JobFunction:
+    Description: "Job Lambda Function ARN"
+    Value: !GetAtt JobFunction.Arn
+  JobFunctionIamRole:
+    Description: "Implicit IAM Role created for Job function"
+    Value: !GetAtt JobFunctionRole.Arn
