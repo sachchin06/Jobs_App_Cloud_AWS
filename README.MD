@@ -2,7 +2,7 @@ Jobs Crud Application
 
 AWS Lambda, Cognito, Api Gateway
 
-SImplements Steps
+Implements Steps
 
 #create docker image
 docker build -t job-app-img:1.0.0 .
@@ -19,3 +19,11 @@ sam build
 
 #sam deploy
 sam deploy --guided
+
+#Authentication Api
+navigate to authApi directory
+nodemon start
+
+#JobsApplicationApi
+navigate to jobsApi directory
+nodemon start
